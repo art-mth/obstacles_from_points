@@ -9,6 +9,12 @@ class ObstaclesFromPoints : public lms::Module {
     bool deinitialize();
     void configsChanged() override;
     bool cycle();
+
+   private:
+    lms::ReadDataChannel<lms::math::polyLine2f> points;
+    lms::ReadDataChannel<lms::math::polyLine2f> centerLine;
+
+    lms::WriteDataChannel<street_environment::EnvironmentObjects> obstacles;
 };
 
 #endif  // OBSTACLES_FROM_POINTS_H
