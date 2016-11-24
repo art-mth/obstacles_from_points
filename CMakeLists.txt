@@ -2,11 +2,13 @@ cmake_minimum_required(VERSION 2.8.12)
 
 set(SOURCES
     "src/obstacles_from_points.cpp"
+    "src/obstacles_from_points_impl.cpp"
     "src/interface.cpp"
 )
 
 set(HEADERS
     "include/obstacles_from_points.h"
+    "include/obstacles_from_points_impl.h"
 )
 
 #set compiler flags
@@ -17,4 +19,4 @@ endif()
 include_directories("include")
 
 add_library(obstacles_from_points MODULE ${SOURCES} ${HEADERS})
-target_link_libraries(obstacles_from_points PRIVATE lmscore)
+target_link_libraries(obstacles_from_points PRIVATE lmscore lms_math street_environment)
