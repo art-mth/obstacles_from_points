@@ -5,8 +5,7 @@
 
 #include <lms/math/polyline.h>
 #include <lms/math/vertex.h>
-#include <street_environment/obstacle.h>
-#include <street_environment/street_environment.h>
+#include <street_environment/bounding_box.h>
 
 class ObstaclesFromPointsImpl {
    public:
@@ -15,10 +14,7 @@ class ObstaclesFromPointsImpl {
         const lms::math::polyLine2f& centerLine);
 
     void fillObstacles(const std::vector<const lms::math::vertex2f*>& points,
-                       street_environment::EnvironmentObjects& obstacles);
-
-    street_environment::ObstaclePtr createObstacle(
-        const std::vector<const lms::math::vertex2f*>& blob);
+                       street_environment::BoundedObstacles& obstacles);
 };
 
 #endif  // OBSTACLES_FROM_POINTS_IMPL_H

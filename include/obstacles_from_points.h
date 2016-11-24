@@ -4,9 +4,8 @@
 #include <vector>
 
 #include <lms/math/polyline.h>
-#include <lms/math/vertex.h>
 #include <lms/module.h>
-#include <street_environment/street_environment.h>
+#include <street_environment/bounding_box.h>
 
 #include "obstacles_from_points_impl.h"
 
@@ -20,7 +19,7 @@ class ObstaclesFromPoints : public lms::Module {
    private:
     lms::ReadDataChannel<lms::math::polyLine2f> points;
     lms::ReadDataChannel<lms::math::polyLine2f> centerLine;
-    lms::WriteDataChannel<street_environment::EnvironmentObjects> obstacles;
+    lms::WriteDataChannel<street_environment::BoundedObstacles> obstacles;
 
     std::unique_ptr<ObstaclesFromPointsImpl> impl;
 };
