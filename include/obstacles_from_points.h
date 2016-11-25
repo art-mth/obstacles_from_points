@@ -22,7 +22,7 @@ class ObstaclesFromPoints : public lms::Module {
     lms::ReadDataChannel<lms::math::PointCloud2f> pointCloud;
     lms::ReadDataChannel<lms::math::polyLine2f> centerLine;
     lms::WriteDataChannel<lms::math::PointCloud2f> culledPointCloud;
-    lms::WriteDataChannel<street_environment::BoundedObstacles> obstacles;
+    lms::WriteDataChannel<street_environment::BoundingBoxVector> obstacles;
 
     std::unique_ptr<ObstaclesFromPointsImpl> impl;
 

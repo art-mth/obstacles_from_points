@@ -15,7 +15,7 @@ class ObstaclesFromPointsImpl {
                          lms::math::PointCloud2f& culledPointCloud);
 
     void fillObstacles(const lms::math::PointCloud2f& pointCloud,
-                       street_environment::BoundedObstacles& obstacles);
+                       street_environment::BoundingBoxVector& obstacles);
 
     void setLaneWidthMeter(float laneWidthMeter) {
         m_laneWidthMeter = laneWidthMeter;

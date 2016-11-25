@@ -7,7 +7,7 @@ bool ObstaclesFromPoints::initialize() {
     centerLine = readChannel<lms::math::polyLine2f>("CENTER_LINE");
     culledPointCloud =
         writeChannel<lms::math::PointCloud2f>("CULLED_POINT_CLOUD");
-    obstacles = writeChannel<street_environment::BoundedObstacles>("OBSTACLES");
+    obstacles = writeChannel<street_environment::BoundingBoxVector>("OBSTACLES");
 
     impl =
         std::unique_ptr<ObstaclesFromPointsImpl>(new ObstaclesFromPointsImpl);

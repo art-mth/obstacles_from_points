@@ -26,7 +26,7 @@ void ObstaclesFromPointsImpl::cullValidPoints(
 
 void ObstaclesFromPointsImpl::fillObstacles(
     const lms::math::PointCloud2f& pointCloud,
-    street_environment::BoundedObstacles& obstacles) {
+    street_environment::BoundingBoxVector& obstacles) {
     std::vector<lms::math::vertex2f> obstaclePoints;
     const lms::math::vertex2f* prevPoint = &(pointCloud.points()[0]);
     for (const auto& curPoint : pointCloud.points()) {
