@@ -3,10 +3,10 @@
 #include <limits>
 
 std::vector<const lms::math::vertex2f*> ObstaclesFromPointsImpl::cullValidPoints(
-    const lms::math::polyLine2f& points,
+    const lms::math::PointCloud2f& pointCloud,
     const lms::math::polyLine2f& centerLine) {
     std::vector<const lms::math::vertex2f*> validPoints;
-    for (const auto& point : points.points()) {
+    for (const auto& point : pointCloud.points()) {
         // check if point is something on the car
         if (point.x > 0.25 || point.x < -0.1 ||
             point.y > 0.1 || point.y < -0.1) {

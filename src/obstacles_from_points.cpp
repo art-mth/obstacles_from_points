@@ -3,7 +3,7 @@
 #include <lms/math/vertex.h>
 
 bool ObstaclesFromPoints::initialize() {
-    points = readChannel<lms::math::polyLine2f>("POINTS");
+    pointCloud = readChannel<lms::math::PointCloud2f>("POINT_CLOUD");
     centerLine = readChannel<lms::math::polyLine2f>("CENTER_LINE");
     obstacles = writeChannel<street_environment::BoundedObstacles>("OBSTACLES");
 
@@ -19,14 +19,12 @@ void ObstaclesFromPoints::configsChanged() { configureImpl(); }
 
 bool ObstaclesFromPoints::cycle() {
     obstacles->clear();
-    if (points->points().size() == 0) {
-        logger.debug() << "No points";
+    if (pointCloud->points().size() == 0) {
         return true;
     }
     std::vector<const lms::math::vertex2f*> validPoints =
-        impl->cullValidPoints(*points, *centerLine);
+        impl->cullValidPoints(*pointCloud, *centerLine);
     if (validPoints.size() == 0) {
-        logger.debug() << "No valid points";
         return true;
     }
     impl->fillObstacles(validPoints, *obstacles);

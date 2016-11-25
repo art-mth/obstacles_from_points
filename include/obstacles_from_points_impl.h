@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include <lms/math/point_cloud.h>
 #include <lms/math/polyline.h>
 #include <lms/math/vertex.h>
 #include <street_environment/bounding_box.h>
@@ -10,7 +11,7 @@
 class ObstaclesFromPointsImpl {
    public:
     std::vector<const lms::math::vertex2f*> cullValidPoints(
-        const lms::math::polyLine2f& points,
+        const lms::math::PointCloud2f& pointCloud,
         const lms::math::polyLine2f& centerLine);
 
     void fillObstacles(const std::vector<const lms::math::vertex2f*>& points,

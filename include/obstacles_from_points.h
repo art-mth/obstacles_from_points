@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+#include <lms/math/point_cloud.h>
 #include <lms/math/polyline.h>
 #include <lms/module.h>
 #include <street_environment/bounding_box.h>
@@ -18,7 +19,7 @@ class ObstaclesFromPoints : public lms::Module {
     bool cycle();
 
    private:
-    lms::ReadDataChannel<lms::math::polyLine2f> points;
+    lms::ReadDataChannel<lms::math::PointCloud2f> pointCloud;
     lms::ReadDataChannel<lms::math::polyLine2f> centerLine;
     lms::WriteDataChannel<street_environment::BoundedObstacles> obstacles;
 
