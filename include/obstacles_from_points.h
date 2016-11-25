@@ -1,6 +1,7 @@
 #ifndef OBSTACLES_FROM_POINTS_H
 #define OBSTACLES_FROM_POINTS_H
 
+#include <memory>
 #include <vector>
 
 #include <lms/math/polyline.h>

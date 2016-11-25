@@ -8,8 +8,8 @@ std::vector<const lms::math::vertex2f*> ObstaclesFromPointsImpl::cullValidPoints
     std::vector<const lms::math::vertex2f*> validPoints;
     for (const auto& point : points.points()) {
         // check if point is something on the car
-        if ((point.x > 0.25 || point.x < -0.1) &&
-            (point.y > 0.1 || point.y < -0.1)) {
+        if (point.x > 0.25 || point.x < -0.1 ||
+            point.y > 0.1 || point.y < -0.1) {
             float distanceToCenterLine = std::numeric_limits<float>::infinity();
             for (const auto& centerLinePoint : centerLine.points()) {
                 float ndistance = centerLinePoint.distance(point);
@@ -39,5 +39,8 @@ void ObstaclesFromPointsImpl::fillObstacles(
         }
         blob.push_back(*curPoint);
         prevPoint = curPoint;
+    }
+    if (blob.size() >= m_obstaclePointThreshold) {
+        obstacles.push_back(street_environment::BoundingBox(blob));
     }
 }
