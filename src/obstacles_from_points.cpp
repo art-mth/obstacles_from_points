@@ -20,11 +20,12 @@ bool ObstaclesFromPoints::deinitialize() { return true; }
 void ObstaclesFromPoints::configsChanged() { configureImpl(); }
 
 bool ObstaclesFromPoints::cycle() {
-    if (pointCloud->points().size() == 0) {
+    if (pointCloud->size() == 0) {
         return true;
     }
+    culledPointCloud->clear();
     impl->cullValidPoints(*pointCloud, *centerLine, *culledPointCloud);
-    if (culledPointCloud->points().size() == 0) {
+    if (culledPointCloud->size() == 0) {
         return true;
     }
     obstacles->clear();
