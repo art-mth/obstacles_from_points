@@ -2,14 +2,14 @@
 
 #include <limits>
 
-std::vector<const lms::math::vertex2f*> ObstaclesFromPointsImpl::cullValidPoints(
+void ObstaclesFromPointsImpl::cullValidPoints(
     const lms::math::PointCloud2f& pointCloud,
-    const lms::math::polyLine2f& centerLine) {
-    std::vector<const lms::math::vertex2f*> validPoints;
+    const lms::math::polyLine2f& centerLine,
+    lms::math::PointCloud2f& culledPointCloud) {
     for (const auto& point : pointCloud.points()) {
         // check if point is something on the car
-        if (point.x > 0.25 || point.x < -0.1 ||
-            point.y > 0.1 || point.y < -0.1) {
+        if (point.x > 0.25 || point.x < -0.1 || point.y > 0.1 ||
+            point.y < -0.1) {
             float distanceToCenterLine = std::numeric_limits<float>::infinity();
             for (const auto& centerLinePoint : centerLine.points()) {
                 float ndistance = centerLinePoint.distance(point);
@@ -18,29 +18,29 @@ std::vector<const lms::math::vertex2f*> ObstaclesFromPointsImpl::cullValidPoints
                 }
             }
             if (distanceToCenterLine < m_laneWidthMeter) {
-                validPoints.push_back(&point);
+                culledPointCloud.points().push_back(point);
             }
         }
     }
-    return validPoints;
 }
 
 void ObstaclesFromPointsImpl::fillObstacles(
-    const std::vector<const lms::math::vertex2f*>& points,
+    const lms::math::PointCloud2f& pointCloud,
     street_environment::BoundedObstacles& obstacles) {
-    std::vector<lms::math::vertex2f> blob;
-    const lms::math::vertex2f* prevPoint = points[0];
-    for (const auto curPoint : points) {
-        if (prevPoint->distance(*curPoint) > m_obstacleDistanceThreshold) {
-            if (blob.size() >= m_obstaclePointThreshold) {
-                obstacles.push_back(street_environment::BoundingBox(blob));
+    std::vector<lms::math::vertex2f> obstaclePoints;
+    const lms::math::vertex2f* prevPoint = &(pointCloud.points()[0]);
+    for (const auto& curPoint : pointCloud.points()) {
+        if (prevPoint->distance(curPoint) > m_obstacleDistanceThreshold) {
+            if (obstaclePoints.size() >= m_obstaclePointThreshold) {
+                obstacles.push_back(
+                    street_environment::BoundingBox(obstaclePoints));
             }
-            blob.clear();
+            obstaclePoints.clear();
         }
-        blob.push_back(*curPoint);
-        prevPoint = curPoint;
+        obstaclePoints.push_back(curPoint);
+        prevPoint = &curPoint;
     }
-    if (blob.size() >= m_obstaclePointThreshold) {
-        obstacles.push_back(street_environment::BoundingBox(blob));
+    if (obstaclePoints.size() >= m_obstaclePointThreshold) {
+        obstacles.push_back(street_environment::BoundingBox(obstaclePoints));
     }
 }
