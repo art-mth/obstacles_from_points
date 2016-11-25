@@ -22,6 +22,8 @@ class ObstaclesFromPoints : public lms::Module {
     lms::WriteDataChannel<street_environment::BoundedObstacles> obstacles;
 
     std::unique_ptr<ObstaclesFromPointsImpl> impl;
+
+    void configureImpl();
 };
 
 #endif  // OBSTACLES_FROM_POINTS_H

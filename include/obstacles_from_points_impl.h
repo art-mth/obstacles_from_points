@@ -15,6 +15,22 @@ class ObstaclesFromPointsImpl {
 
     void fillObstacles(const std::vector<const lms::math::vertex2f*>& points,
                        street_environment::BoundedObstacles& obstacles);
+
+    void setLaneWidthMeter(float laneWidthMeter) {
+        m_laneWidthMeter = laneWidthMeter;
+    }
+    void setObstacleDistanceThreshold(float obstacleDistanceThreshold) {
+        m_obstacleDistanceThreshold = obstacleDistanceThreshold;
+    }
+    void setObstaclePointThreshold(unsigned obstaclePointThreshold) {
+        m_obstaclePointThreshold = obstaclePointThreshold;
+    }
+
+   private:
+    ////////////////////////////// Config Values ///////////////////////////////
+    float m_laneWidthMeter;
+    float m_obstacleDistanceThreshold;
+    unsigned m_obstaclePointThreshold;
 };
 
 #endif  // OBSTACLES_FROM_POINTS_IMPL_H

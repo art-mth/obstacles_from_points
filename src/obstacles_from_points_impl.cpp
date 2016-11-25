@@ -2,12 +2,6 @@
 
 #include <limits>
 
-namespace {
-const float kLaneWidth = 0.4;
-const float kBlobDistanceThreshold = 0.1;
-const int kMinBlobElements = 5;
-}
-
 std::vector<const lms::math::vertex2f*> ObstaclesFromPointsImpl::cullValidPoints(
     const lms::math::polyLine2f& points,
     const lms::math::polyLine2f& centerLine) {
@@ -23,7 +17,7 @@ std::vector<const lms::math::vertex2f*> ObstaclesFromPointsImpl::cullValidPoints
                     distanceToCenterLine = ndistance;
                 }
             }
-            if (distanceToCenterLine < kLaneWidth) {
+            if (distanceToCenterLine < m_laneWidthMeter) {
                 validPoints.push_back(&point);
             }
         }
@@ -37,8 +31,8 @@ void ObstaclesFromPointsImpl::fillObstacles(
     std::vector<lms::math::vertex2f> blob;
     const lms::math::vertex2f* prevPoint = points[0];
     for (const auto curPoint : points) {
-        if (prevPoint->distance(*curPoint) > kBlobDistanceThreshold) {
-            if(blob.size() >= kMinBlobElements) {
+        if (prevPoint->distance(*curPoint) > m_obstacleDistanceThreshold) {
+            if (blob.size() >= m_obstaclePointThreshold) {
                 obstacles.push_back(street_environment::BoundingBox(blob));
             }
             blob.clear();
