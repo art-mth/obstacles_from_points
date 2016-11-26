@@ -3,6 +3,7 @@
 #include <lms/math/vertex.h>
 
 bool ObstaclesFromPoints::initialize() {
+    newData = readChannel<bool>("NEW_DATA");
     pointCloud = readChannel<lms::math::PointCloud2f>("POINT_CLOUD");
     centerLine = readChannel<lms::math::polyLine2f>("CENTER_LINE");
     culledPointCloud =
@@ -20,16 +21,18 @@ bool ObstaclesFromPoints::deinitialize() { return true; }
 void ObstaclesFromPoints::configsChanged() { configureImpl(); }
 
 bool ObstaclesFromPoints::cycle() {
-    if (pointCloud->size() == 0) {
-        return true;
+    if (*newData) {
+        if (pointCloud->size() == 0) {
+            return true;
+        }
+        culledPointCloud->clear();
+        impl->cullValidPoints(*pointCloud, *centerLine, *culledPointCloud);
+        if (culledPointCloud->size() == 0) {
+            return true;
+        }
+        obstacles->clear();
+        impl->fillObstacles(*culledPointCloud, *obstacles);
     }
-    culledPointCloud->clear();
-    impl->cullValidPoints(*pointCloud, *centerLine, *culledPointCloud);
-    if (culledPointCloud->size() == 0) {
-        return true;
-    }
-    obstacles->clear();
-    impl->fillObstacles(*culledPointCloud, *obstacles);
     return true;
 }
 
