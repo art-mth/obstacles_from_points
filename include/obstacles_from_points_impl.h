@@ -14,7 +14,7 @@ class ObstaclesFromPointsImpl {
         const lms::math::PointCloud2f& pointCloud,
         const lms::math::polyLine2f& centerLine);
 
-    street_environment::BoundingBoxVector getObstacles(
+    street_environment::BoundingBox2fVector getObstacles(
         const lms::math::PointCloud2f& pointCloud);
 
     ////////////////////////////// Config Setters //////////////////////////////

@@ -9,7 +9,7 @@ bool ObstaclesFromPoints::initialize() {
     culledPointCloud =
         writeChannel<lms::math::PointCloud2f>("CULLED_POINT_CLOUD");
     obstacles =
-        writeChannel<street_environment::BoundingBoxVector>("OBSTACLES");
+        writeChannel<street_environment::BoundingBox2fVector>("OBSTACLES");
 
     impl =
         std::unique_ptr<ObstaclesFromPointsImpl>(new ObstaclesFromPointsImpl);
