@@ -28,7 +28,7 @@ std::vector<lms::math::vertex2f> ObstaclesFromPointsImpl::cullValidPoints(
 street_environment::BoundingBoxVector ObstaclesFromPointsImpl::getObstacles(
     const lms::math::PointCloud2f& pointCloud) {
     street_environment::BoundingBoxVector obstacles;
-    std::vector<lms::math::vertex2f> obstaclePoints;
+    lms::math::PointCloud2f obstaclePoints;
     const lms::math::vertex2f* prevPoint = &(pointCloud.points().at(0));
     for (const auto& curPoint : pointCloud.points()) {
         if (prevPoint->distance(curPoint) > m_obstacleDistanceThreshold) {
@@ -38,7 +38,7 @@ street_environment::BoundingBoxVector ObstaclesFromPointsImpl::getObstacles(
             }
             obstaclePoints.clear();
         }
-        obstaclePoints.push_back(curPoint);
+        obstaclePoints.points().push_back(curPoint);
         prevPoint = &curPoint;
     }
     if (obstaclePoints.size() >= m_obstaclePointThreshold) {
