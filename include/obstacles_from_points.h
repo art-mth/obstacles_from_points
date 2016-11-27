@@ -2,7 +2,6 @@
 #define OBSTACLES_FROM_POINTS_H
 
 #include <memory>
-#include <vector>
 
 #include <lms/math/point_cloud.h>
 #include <lms/math/polyline.h>
@@ -19,15 +18,16 @@ class ObstaclesFromPoints : public lms::Module {
     bool cycle();
 
    private:
+    void configureImpl();
+
+    std::unique_ptr<ObstaclesFromPointsImpl> impl;
+
+    /////////////////////////////// Data Channels //////////////////////////////
     lms::ReadDataChannel<bool> newData;
     lms::ReadDataChannel<lms::math::PointCloud2f> pointCloud;
     lms::ReadDataChannel<lms::math::polyLine2f> centerLine;
     lms::WriteDataChannel<lms::math::PointCloud2f> culledPointCloud;
     lms::WriteDataChannel<street_environment::BoundingBoxVector> obstacles;
-
-    std::unique_ptr<ObstaclesFromPointsImpl> impl;
-
-    void configureImpl();
 };
 
 #endif  // OBSTACLES_FROM_POINTS_H

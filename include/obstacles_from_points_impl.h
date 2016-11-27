@@ -10,13 +10,14 @@
 
 class ObstaclesFromPointsImpl {
    public:
-    void cullValidPoints(const lms::math::PointCloud2f& pointCloud,
-                         const lms::math::polyLine2f& centerLine,
-                         lms::math::PointCloud2f& culledPointCloud);
+    std::vector<lms::math::vertex2f> cullValidPoints(
+        const lms::math::PointCloud2f& pointCloud,
+        const lms::math::polyLine2f& centerLine);
 
-    void fillObstacles(const lms::math::PointCloud2f& pointCloud,
-                       street_environment::BoundingBoxVector& obstacles);
+    street_environment::BoundingBoxVector getObstacles(
+        const lms::math::PointCloud2f& pointCloud);
 
+    ////////////////////////////// Config Setters //////////////////////////////
     void setLaneWidthMeter(float laneWidthMeter) {
         m_laneWidthMeter = laneWidthMeter;
     }

@@ -8,7 +8,8 @@ bool ObstaclesFromPoints::initialize() {
     centerLine = readChannel<lms::math::polyLine2f>("CENTER_LINE");
     culledPointCloud =
         writeChannel<lms::math::PointCloud2f>("CULLED_POINT_CLOUD");
-    obstacles = writeChannel<street_environment::BoundingBoxVector>("OBSTACLES");
+    obstacles =
+        writeChannel<street_environment::BoundingBoxVector>("OBSTACLES");
 
     impl =
         std::unique_ptr<ObstaclesFromPointsImpl>(new ObstaclesFromPointsImpl);
@@ -25,13 +26,12 @@ bool ObstaclesFromPoints::cycle() {
         if (pointCloud->size() == 0) {
             return true;
         }
-        culledPointCloud->clear();
-        impl->cullValidPoints(*pointCloud, *centerLine, *culledPointCloud);
+        culledPointCloud->points(
+            impl->cullValidPoints(*pointCloud, *centerLine));
         if (culledPointCloud->size() == 0) {
             return true;
         }
-        obstacles->clear();
-        impl->fillObstacles(*culledPointCloud, *obstacles);
+        *obstacles = impl->getObstacles(*culledPointCloud);
     }
     return true;
 }
