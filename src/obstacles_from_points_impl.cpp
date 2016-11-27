@@ -10,14 +10,7 @@ std::vector<lms::math::vertex2f> ObstaclesFromPointsImpl::cullValidPoints(
         // check if point is something on the car
         if (point.x > 0.25 || point.x < -0.1 || point.y > 0.1 ||
             point.y < -0.1) {
-            float distanceToCenterLine = std::numeric_limits<float>::infinity();
-            for (const auto& centerLinePoint : centerLine.points()) {
-                float distance = centerLinePoint.distance(point);
-                if (distance < distanceToCenterLine) {
-                    distanceToCenterLine = distance;
-                }
-            }
-            if (distanceToCenterLine < m_laneWidthMeter) {
+            if (centerLine.perpendicularDistance(point) < m_laneWidthMeter) {
                 validPoints.push_back(point);
             }
         }
