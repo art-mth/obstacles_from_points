@@ -38,8 +38,8 @@ bool ObstaclesFromPoints::cycle() {
 
 void ObstaclesFromPoints::configureImpl() {
     impl->setLaneWidthMeter(config().get<float>("laneWidthMeter", 0.4));
-    impl->setObstacleDistanceThreshold(
-        config().get<float>("obstacleDistanceThreshold", 0.05));
+    impl->setObstacleDistanceThresholdMeter(
+        config().get<float>("obstacleDistanceThresholdMeter", 0.05));
     impl->setObstaclePointThreshold(
         config().get<int>("obstaclePointThreshold", 10));
 }

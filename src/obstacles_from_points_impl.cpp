@@ -24,7 +24,7 @@ street_environment::BoundingBox2fVector ObstaclesFromPointsImpl::getObstacles(
     lms::math::PointCloud2f obstaclePoints;
     const lms::math::vertex2f* prevPoint = &(pointCloud.points().at(0));
     for (const auto& curPoint : pointCloud.points()) {
-        if (prevPoint->distance(curPoint) > m_obstacleDistanceThreshold) {
+        if (prevPoint->distance(curPoint) > m_obstacleDistanceThresholdMeter) {
             if (obstaclePoints.size() >= m_obstaclePointThreshold) {
                 obstacles.push_back(
                     street_environment::BoundingBox2f(obstaclePoints));
