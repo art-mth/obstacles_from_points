@@ -21,18 +21,35 @@ class ObstaclesFromPointsImpl {
     void setLaneWidthMeter(float laneWidthMeter) {
         m_laneWidthMeter = laneWidthMeter;
     }
-    void setObstacleDistanceThreshold(float obstacleDistanceThreshold) {
-        m_obstacleDistanceThreshold = obstacleDistanceThreshold;
+    void setObstacleDistanceThresholdMeter(
+        float obstacleDistanceThresholdMeter) {
+        m_obstacleDistanceThresholdMeter = obstacleDistanceThresholdMeter;
     }
     void setObstaclePointThreshold(unsigned obstaclePointThreshold) {
         m_obstaclePointThreshold = obstaclePointThreshold;
+    }
+    void setObstaclePointMinXOffsetFront(float minOffset) {
+        m_obstaclePointMinXOffsetFront = minOffset;
+    }
+    void setObstaclePointMinXOffsetBack(float minOffset) {
+        m_obstaclePointMinXOffsetBack = minOffset;
+    }
+    void setObstaclePointMinYOffsetLeft(float minOffset) {
+        m_obstaclePointMinYOffsetLeft = minOffset;
+    }
+    void setObstaclePointMinYOffsetRight(float minOffset) {
+        m_obstaclePointMinYOffsetRight = minOffset;
     }
 
    private:
     ////////////////////////////// Config Values ///////////////////////////////
     float m_laneWidthMeter;
-    float m_obstacleDistanceThreshold;
+    float m_obstacleDistanceThresholdMeter;
     unsigned m_obstaclePointThreshold;
+    float m_obstaclePointMinXOffsetFront;
+    float m_obstaclePointMinXOffsetBack;
+    float m_obstaclePointMinYOffsetLeft;
+    float m_obstaclePointMinYOffsetRight;
 };
 
 #endif  // OBSTACLES_FROM_POINTS_IMPL_H
