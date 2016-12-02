@@ -8,8 +8,11 @@ std::vector<lms::math::vertex2f> ObstaclesFromPointsImpl::cullValidPoints(
     std::vector<lms::math::vertex2f> validPoints;
     for (const auto& point : pointCloud.points()) {
         // check if point is something on the car
-        if (point.x > 0.25 || point.x < -0.1 || point.y > 0.2 ||
-            point.y < -0.2) {
+        if (point.x > m_obstaclePointMinXOffsetFront ||
+            point.x < -m_obstaclePointMinXOffsetBack ||
+            point.y > m_obstaclePointMinYOffsetLeft ||
+            point.y < -m_obstaclePointMinYOffsetRight) {
+            // check if point is beside the road
             if (centerLine.perpendicularDistance(point) < m_laneWidthMeter) {
                 validPoints.push_back(point);
             }

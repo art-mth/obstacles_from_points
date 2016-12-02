@@ -42,4 +42,12 @@ void ObstaclesFromPoints::configureImpl() {
         config().get<float>("obstacleDistanceThresholdMeter", 0.05));
     impl->setObstaclePointThreshold(
         config().get<int>("obstaclePointThreshold", 10));
+    impl->setObstaclePointMinXOffsetFront(
+        config().get<float>("obstaclePointMinXOffsetFront", 0.25));
+    impl->setObstaclePointMinXOffsetBack(
+        config().get<float>("obstaclePointMinXOffsetBack", 0.1));
+    impl->setObstaclePointMinYOffsetLeft(
+        config().get<float>("obstaclePointMinYOffsetLeft", 0.2));
+    impl->setObstaclePointMinYOffsetRight(
+        config().get<float>("obstaclePointMinYOffsetRight", 0.2));
 }
