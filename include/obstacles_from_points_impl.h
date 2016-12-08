@@ -17,6 +17,10 @@ class ObstaclesFromPointsImpl {
     street_environment::BoundingBox2fVector getObstacles(
         const lms::math::PointCloud2f& pointCloud);
 
+    void moveObstacles(street_environment::BoundingBox2fVector& obstacles,
+                       const lms::math::vertex2f& deltaPosition,
+                       float deltaRotation);
+
     ////////////////////////////// Config Setters //////////////////////////////
     void setLaneWidthMeter(float laneWidthMeter) {
         m_laneWidthMeter = laneWidthMeter;
