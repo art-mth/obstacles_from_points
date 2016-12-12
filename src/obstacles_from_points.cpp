@@ -4,6 +4,7 @@
 
 bool ObstaclesFromPoints::initialize() {
     newData = readChannel<bool>("NEW_DATA");
+    car = readChannel<street_environment::Car>("CAR");
     pointCloud = readChannel<lms::math::PointCloud2f>("POINT_CLOUD");
     centerLine = readChannel<lms::math::polyLine2f>("CENTER_LINE");
     culledPointCloud =
@@ -32,6 +33,8 @@ bool ObstaclesFromPoints::cycle() {
             return true;
         }
         *obstacles = impl->getObstacles(*culledPointCloud);
+    } else {
+        impl->moveObstacles(*obstacles, car->deltaPosition(), car->deltaPhi());
     }
     return true;
 }

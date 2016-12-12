@@ -42,3 +42,12 @@ street_environment::BoundingBox2fVector ObstaclesFromPointsImpl::getObstacles(
     }
     return obstacles;
 }
+
+void ObstaclesFromPointsImpl::moveObstacles(
+    street_environment::BoundingBox2fVector& obstacles,
+    const lms::math::vertex2f& deltaPosition, float deltaRotation) {
+    for (auto& obstacle : obstacles) {
+        obstacle.move(deltaPosition);
+        obstacle.rotate(deltaRotation);
+    }
+}
