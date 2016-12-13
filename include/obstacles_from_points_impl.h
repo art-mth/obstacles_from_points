@@ -10,16 +10,49 @@
 
 class ObstaclesFromPointsImpl {
    public:
+    /**
+     * @brief Culls all points from pointCloud that are of interest for our
+     * obstacle detection. For example we do not care about points that lie
+     * beside the road.
+     */
     std::vector<lms::math::vertex2f> cullValidPoints(
         const lms::math::PointCloud2f& pointCloud,
         const lms::math::polyLine2f& centerLine);
 
+    /**
+     * @brief Everytime we get new point data we discard our old points. We only
+     * want to discard the points that we have new objective data for. Meaning
+     * everything in our view range. Points that cannot be detected but that are
+     * still relevant should be kept.
+     * @param obstacles Last cycles obstacles moved into the current
+     * cycles cartesian coordinates.
+     * @returns All obstacles that are relevant for us. Meaning that lie in a
+     * specific area that we have no new data for.
+     */
     street_environment::BasicObstacleVector cullOldObstacles(
         const street_environment::BasicObstacleVector& obstacles);
 
+    /**
+     * @brief Everytime we get new point data we want to identify relevant
+     * obstacles. Since the point data may contain false positives we cluster.
+     * An obstacle is only detected if there is a high enough density of points
+     * in a specific area.
+     * @param pointCloud Culled point data that is relevant for detecting
+     * obstacles (e.g On the road).
+     * @returns All newly detected obstacles.
+     */
     street_environment::BasicObstacleVector getNewObstacles(
         const lms::math::PointCloud2f& pointCloud);
 
+    /**
+     * @brief Translates all obstacles by deltaPosition and rotates by
+     * deltaRotation. After this operation the obstacles are in accord with the
+     * car cartestian plane of the current cycle.
+     * @param deltaPosition Position difference in the cartesian plane of the
+     * last cycle.
+     * @param deltaRotation Rotation difference in radians between last cycles
+     * and this cycles cartesian plane.
+     */
     void moveObstacles(street_environment::BasicObstacleVector& obstacles,
                        const lms::math::vertex2f& deltaPosition,
                        float deltaRotation);

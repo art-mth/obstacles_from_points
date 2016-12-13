@@ -43,8 +43,7 @@ ObstaclesFromPointsImpl::cullOldObstacles(
     for (const auto& obstacle : obstacles) {
         street_environment::BoundingBox2f boundingBox = obstacle.boundingBox();
         if (boundingBox.corners().at(1).x > -m_maxObstacleTranslate &&
-            boundingBox.corners().at(0).x < 0 &&
-            boundingBox.corners().at(1).x < 0.5) {
+            boundingBox.corners().at(0).x < 0) {
             culledObstacles.push_back(
                 culledObstacle(-m_maxObstacleTranslate, 0, obstacle));
         }
@@ -80,7 +79,7 @@ void ObstaclesFromPointsImpl::moveObstacles(
     street_environment::BasicObstacleVector& obstacles,
     const lms::math::vertex2f& deltaPosition, float deltaRotation) {
     for (auto& obstacle : obstacles) {
-        obstacle.translate(deltaPosition);
+        obstacle.translate(-deltaPosition);
         obstacle.rotate(deltaRotation);
     }
 }

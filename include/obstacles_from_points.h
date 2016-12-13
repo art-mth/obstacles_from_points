@@ -11,6 +11,11 @@
 
 #include "obstacles_from_points_impl.h"
 
+/**
+ * @brief This module is responsible for combining new and old point data for
+ * obstacle detection. Since we do not get new point data every cycle we move
+ * old points in no data cycles and add new points in data cycles.
+ */
 class ObstaclesFromPoints : public lms::Module {
    public:
     bool initialize();
