@@ -47,6 +47,9 @@ class ObstaclesFromPointsImpl {
     void setObstaclePointMinYOffsetRight(float minOffset) {
         m_obstaclePointMinYOffsetRight = minOffset;
     }
+    void setMaxObstacleTranslate(float maxTranslate) {
+        m_maxObstacleTranslate = maxTranslate;
+    }
 
    private:
     ////////////////////////////// Config Values ///////////////////////////////
@@ -57,6 +60,7 @@ class ObstaclesFromPointsImpl {
     float m_obstaclePointMinXOffsetBack;
     float m_obstaclePointMinYOffsetLeft;
     float m_obstaclePointMinYOffsetRight;
+    float m_maxObstacleTranslate;
 };
 
 #endif  // OBSTACLES_FROM_POINTS_IMPL_H

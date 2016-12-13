@@ -61,6 +61,8 @@ void ObstaclesFromPoints::configureImpl() {
         config().get<float>("obstaclePointMinYOffsetLeft", 0.2));
     impl->setObstaclePointMinYOffsetRight(
         config().get<float>("obstaclePointMinYOffsetRight", 0.2));
+    impl->setMaxObstacleTranslate(
+        config().get<float>("maxObstacleTranslate", 0.5));
 }
 
 lms::math::Pose2D ObstaclesFromPoints::getDeltaPose() {
