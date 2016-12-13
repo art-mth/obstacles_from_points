@@ -4,7 +4,7 @@
 
 bool ObstaclesFromPoints::initialize() {
     newData = readChannel<bool>("NEW_DATA");
-    car = readChannel<street_environment::Car>("CAR");
+    car = readChannel<street_environment::CarCommand>("CAR");
     pointCloud = readChannel<lms::math::PointCloud2f>("POINT_CLOUD");
     centerLine = readChannel<lms::math::polyLine2f>("CENTER_LINE");
     culledPointCloud =
