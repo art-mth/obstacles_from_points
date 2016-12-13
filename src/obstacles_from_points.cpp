@@ -4,9 +4,9 @@
 
 bool ObstaclesFromPoints::initialize() {
     newData = readChannel<bool>("NEW_DATA");
-    car = readChannel<street_environment::CarCommand>("CAR");
     pointCloud = readChannel<lms::math::PointCloud2f>("POINT_CLOUD");
     centerLine = readChannel<lms::math::polyLine2f>("CENTER_LINE");
+    poseHistory = readChannel<lms::math::Pose2DHistory>("POSE2D_HISTORY");
     culledPointCloud =
         writeChannel<lms::math::PointCloud2f>("CULLED_POINT_CLOUD");
     obstacles =
@@ -34,7 +34,20 @@ bool ObstaclesFromPoints::cycle() {
         }
         *obstacles = impl->getObstacles(*culledPointCloud);
     } else {
-        impl->moveObstacles(*obstacles, car->deltaPosition(), car->deltaPhi());
+        lms::math::Pose2D oldPose, deltaPose;
+        if (poseHistory->getPose(lastUpdate.toFloat<std::milli, double>(),
+                                 oldPose)) {
+            lms::math::CoordinateSystem2D coord(oldPose);
+            deltaPose = coord.transformTo(poseHistory->currentPose());
+        } else {
+            logger.warn("cycle") << "no valid pose found: "
+                                 << lastUpdate.toFloat<std::milli, double>();
+        }
+        lastUpdate = lms::Time::now();
+
+        impl->moveObstacles(*obstacles,
+                            lms::math::vertex2f(deltaPose.x, deltaPose.y),
+                            deltaPose.phi);
     }
     return true;
 }
