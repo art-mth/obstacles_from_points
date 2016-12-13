@@ -6,7 +6,7 @@
 #include <lms/math/point_cloud.h>
 #include <lms/math/polyline.h>
 #include <lms/math/vertex.h>
-#include <street_environment/bounding_box.h>
+#include <street_environment/basic_obstacle.h>
 
 class ObstaclesFromPointsImpl {
    public:
@@ -14,13 +14,13 @@ class ObstaclesFromPointsImpl {
         const lms::math::PointCloud2f& pointCloud,
         const lms::math::polyLine2f& centerLine);
 
-    street_environment::BoundingBox2fVector cullOldObstacles(
-        const street_environment::BoundingBox2fVector& obstacles);
+    street_environment::BasicObstacleVector cullOldObstacles(
+        const street_environment::BasicObstacleVector& obstacles);
 
-    street_environment::BoundingBox2fVector getNewObstacles(
+    street_environment::BasicObstacleVector getNewObstacles(
         const lms::math::PointCloud2f& pointCloud);
 
-    void moveObstacles(street_environment::BoundingBox2fVector& obstacles,
+    void moveObstacles(street_environment::BasicObstacleVector& obstacles,
                        const lms::math::vertex2f& deltaPosition,
                        float deltaRotation);
 

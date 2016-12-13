@@ -10,7 +10,7 @@ bool ObstaclesFromPoints::initialize() {
     culledPointCloud =
         writeChannel<lms::math::PointCloud2f>("CULLED_POINT_CLOUD");
     obstacles =
-        writeChannel<street_environment::BoundingBox2fVector>("OBSTACLES");
+        writeChannel<street_environment::BasicObstacleVector>("OBSTACLES");
 
     impl =
         std::unique_ptr<ObstaclesFromPointsImpl>(new ObstaclesFromPointsImpl);
@@ -38,11 +38,10 @@ bool ObstaclesFromPoints::cycle() {
             return true;
         }
         *obstacles = impl->cullOldObstacles(*obstacles);
-        street_environment::BoundingBox2fVector newObstacles =
+        street_environment::BasicObstacleVector newObstacles =
             impl->getNewObstacles(*culledPointCloud);
         obstacles->insert(std::end(*obstacles), std::begin(newObstacles),
                           std::end(newObstacles));
-        logger.warn("cycle") << obstacles->size();
     }
 
     return true;

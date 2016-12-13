@@ -2,8 +2,10 @@
 
 #include <limits>
 
+#include <street_environment/bounding_box.h>
+
 namespace {
-    const float kMaxTranslate = 0.5;
+const float kMaxObstacleTranslate = 0.5;
 }
 
 std::vector<lms::math::vertex2f> ObstaclesFromPointsImpl::cullValidPoints(
@@ -25,30 +27,32 @@ std::vector<lms::math::vertex2f> ObstaclesFromPointsImpl::cullValidPoints(
     return validPoints;
 }
 
-street_environment::BoundingBox2fVector
+street_environment::BasicObstacleVector
 ObstaclesFromPointsImpl::cullOldObstacles(
-    const street_environment::BoundingBox2fVector& obstacles) {
-    street_environment::BoundingBox2fVector culledObstacles;
+    const street_environment::BasicObstacleVector& obstacles) {
+    street_environment::BasicObstacleVector culledObstacles;
     for (const auto& obstacle : obstacles) {
-        if (obstacle.corners().at(1).x > -kMaxTranslate &&
-            obstacle.corners().at(0).x < 0 &&
-            obstacle.corners().at(1).x < 0.25) {
+        street_environment::BoundingBox2f boundingBox = obstacle.boundingBox();
+        if (boundingBox.corners().at(1).x > -kMaxObstacleTranslate &&
+            boundingBox.corners().at(0).x < 0 &&
+            boundingBox.corners().at(1).x < 0.25) {
             culledObstacles.push_back(obstacle);
         }
     }
     return culledObstacles;
 }
 
-street_environment::BoundingBox2fVector ObstaclesFromPointsImpl::getNewObstacles(
+street_environment::BasicObstacleVector
+ObstaclesFromPointsImpl::getNewObstacles(
     const lms::math::PointCloud2f& pointCloud) {
-    street_environment::BoundingBox2fVector obstacles;
+    street_environment::BasicObstacleVector obstacles;
     lms::math::PointCloud2f obstaclePoints;
     const lms::math::vertex2f* prevPoint = &(pointCloud.points().at(0));
     for (const auto& curPoint : pointCloud.points()) {
         if (prevPoint->distance(curPoint) > m_obstacleDistanceThresholdMeter) {
             if (obstaclePoints.size() >= m_obstaclePointThreshold) {
                 obstacles.push_back(
-                    street_environment::BoundingBox2f(obstaclePoints));
+                    street_environment::BasicObstacle(obstaclePoints.points()));
             }
             obstaclePoints.clear();
         }
@@ -56,16 +60,17 @@ street_environment::BoundingBox2fVector ObstaclesFromPointsImpl::getNewObstacles
         prevPoint = &curPoint;
     }
     if (obstaclePoints.size() >= m_obstaclePointThreshold) {
-        obstacles.push_back(street_environment::BoundingBox2f(obstaclePoints));
+        obstacles.push_back(
+            street_environment::BasicObstacle(obstaclePoints.points()));
     }
     return obstacles;
 }
 
 void ObstaclesFromPointsImpl::moveObstacles(
-    street_environment::BoundingBox2fVector& obstacles,
+    street_environment::BasicObstacleVector& obstacles,
     const lms::math::vertex2f& deltaPosition, float deltaRotation) {
     for (auto& obstacle : obstacles) {
-        obstacle.move(deltaPosition);
+        obstacle.translate(deltaPosition);
         obstacle.rotate(deltaRotation);
     }
 }
