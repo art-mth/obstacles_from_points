@@ -2,6 +2,10 @@
 
 #include <limits>
 
+namespace {
+    const float kMaxTranslate = 0.5;
+}
+
 std::vector<lms::math::vertex2f> ObstaclesFromPointsImpl::cullValidPoints(
     const lms::math::PointCloud2f& pointCloud,
     const lms::math::polyLine2f& centerLine) {
@@ -21,7 +25,21 @@ std::vector<lms::math::vertex2f> ObstaclesFromPointsImpl::cullValidPoints(
     return validPoints;
 }
 
-street_environment::BoundingBox2fVector ObstaclesFromPointsImpl::getObstacles(
+street_environment::BoundingBox2fVector
+ObstaclesFromPointsImpl::cullOldObstacles(
+    const street_environment::BoundingBox2fVector& obstacles) {
+    street_environment::BoundingBox2fVector culledObstacles;
+    for (const auto& obstacle : obstacles) {
+        if (obstacle.corners().at(1).x > -kMaxTranslate &&
+            obstacle.corners().at(0).x < 0 &&
+            obstacle.corners().at(1).x < 0.25) {
+            culledObstacles.push_back(obstacle);
+        }
+    }
+    return culledObstacles;
+}
+
+street_environment::BoundingBox2fVector ObstaclesFromPointsImpl::getNewObstacles(
     const lms::math::PointCloud2f& pointCloud) {
     street_environment::BoundingBox2fVector obstacles;
     lms::math::PointCloud2f obstaclePoints;

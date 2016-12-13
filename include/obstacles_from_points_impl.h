@@ -14,7 +14,10 @@ class ObstaclesFromPointsImpl {
         const lms::math::PointCloud2f& pointCloud,
         const lms::math::polyLine2f& centerLine);
 
-    street_environment::BoundingBox2fVector getObstacles(
+    street_environment::BoundingBox2fVector cullOldObstacles(
+        const street_environment::BoundingBox2fVector& obstacles);
+
+    street_environment::BoundingBox2fVector getNewObstacles(
         const lms::math::PointCloud2f& pointCloud);
 
     void moveObstacles(street_environment::BoundingBox2fVector& obstacles,

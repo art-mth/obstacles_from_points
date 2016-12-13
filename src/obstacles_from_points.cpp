@@ -23,6 +23,11 @@ bool ObstaclesFromPoints::deinitialize() { return true; }
 void ObstaclesFromPoints::configsChanged() { configureImpl(); }
 
 bool ObstaclesFromPoints::cycle() {
+    lms::math::Pose2D deltaPose(getDeltaPose());
+    impl->moveObstacles(*obstacles,
+                        lms::math::vertex2f(deltaPose.x, deltaPose.y),
+                        deltaPose.phi);
+
     if (*newData) {
         if (pointCloud->size() == 0) {
             return true;
@@ -32,13 +37,14 @@ bool ObstaclesFromPoints::cycle() {
         if (culledPointCloud->size() == 0) {
             return true;
         }
-        *obstacles = impl->getObstacles(*culledPointCloud);
-    } else {
-        lms::math::Pose2D deltaPose(getDeltaPose());
-        impl->moveObstacles(*obstacles,
-                            lms::math::vertex2f(deltaPose.x, deltaPose.y),
-                            deltaPose.phi);
+        *obstacles = impl->cullOldObstacles(*obstacles);
+        street_environment::BoundingBox2fVector newObstacles =
+            impl->getNewObstacles(*culledPointCloud);
+        obstacles->insert(std::end(*obstacles), std::begin(newObstacles),
+                          std::end(newObstacles));
+        logger.warn("cycle") << obstacles->size();
     }
+
     return true;
 }
 
