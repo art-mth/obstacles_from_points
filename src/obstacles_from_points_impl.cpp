@@ -4,6 +4,19 @@
 
 #include <street_environment/bounding_box.h>
 
+namespace {
+street_environment::BasicObstacle culledObstacle(
+    float minX, float maxX, const street_environment::BasicObstacle& obstacle) {
+    std::vector<lms::math::vertex2f> culledPoints;
+    for (const auto& point : obstacle.points()) {
+        if(point.x > minX && point.x < maxX) {
+            culledPoints.push_back(point);
+        }
+    }
+    return street_environment::BasicObstacle(culledPoints);
+}
+}
+
 std::vector<lms::math::vertex2f> ObstaclesFromPointsImpl::cullValidPoints(
     const lms::math::PointCloud2f& pointCloud,
     const lms::math::polyLine2f& centerLine) {
@@ -31,8 +44,9 @@ ObstaclesFromPointsImpl::cullOldObstacles(
         street_environment::BoundingBox2f boundingBox = obstacle.boundingBox();
         if (boundingBox.corners().at(1).x > -m_maxObstacleTranslate &&
             boundingBox.corners().at(0).x < 0 &&
-            boundingBox.corners().at(1).x < 0.25) {
-            culledObstacles.push_back(obstacle);
+            boundingBox.corners().at(1).x < 0.5) {
+            culledObstacles.push_back(
+                culledObstacle(-m_maxObstacleTranslate, 0, obstacle));
         }
     }
     return culledObstacles;
