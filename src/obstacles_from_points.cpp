@@ -34,17 +34,7 @@ bool ObstaclesFromPoints::cycle() {
         }
         *obstacles = impl->getObstacles(*culledPointCloud);
     } else {
-        lms::math::Pose2D oldPose, deltaPose;
-        if (poseHistory->getPose(lastUpdate.toFloat<std::milli, double>(),
-                                 oldPose)) {
-            lms::math::CoordinateSystem2D coord(oldPose);
-            deltaPose = coord.transformTo(poseHistory->currentPose());
-        } else {
-            logger.warn("cycle") << "no valid pose found: "
-                                 << lastUpdate.toFloat<std::milli, double>();
-        }
-        lastUpdate = lms::Time::now();
-
+        lms::math::Pose2D deltaPose(getDeltaPose());
         impl->moveObstacles(*obstacles,
                             lms::math::vertex2f(deltaPose.x, deltaPose.y),
                             deltaPose.phi);
@@ -66,4 +56,18 @@ void ObstaclesFromPoints::configureImpl() {
         config().get<float>("obstaclePointMinYOffsetLeft", 0.2));
     impl->setObstaclePointMinYOffsetRight(
         config().get<float>("obstaclePointMinYOffsetRight", 0.2));
+}
+
+lms::math::Pose2D ObstaclesFromPoints::getDeltaPose() {
+    lms::math::Pose2D oldPose, deltaPose;
+    if (poseHistory->getPose(lastUpdate.toFloat<std::milli, double>(),
+                             oldPose)) {
+        lms::math::CoordinateSystem2D coord(oldPose);
+        deltaPose = coord.transformTo(poseHistory->currentPose());
+    } else {
+        logger.warn("cycle") << "no valid pose found: "
+                             << lastUpdate.toFloat<std::milli, double>();
+    }
+    lastUpdate = lms::Time::now();
+    return deltaPose;
 }

@@ -20,6 +20,7 @@ class ObstaclesFromPoints : public lms::Module {
 
    private:
     void configureImpl();
+    lms::math::Pose2D getDeltaPose();
 
     std::unique_ptr<ObstaclesFromPointsImpl> impl;
 
